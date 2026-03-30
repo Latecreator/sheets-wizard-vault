@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Sheets Wizard Vault</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #1a7340;
+      --green-light: #e8f5ee;
+      --green-mid: #2d9e5f;
+      --green-dark: #145c33;
+      --text: #1a1a1a;
+      --muted: #5a6672;
+      --border: #d4e6da;
+      --bg: #f7fbf9;
+      --white: #ffffff;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── PASSWORD GATE ── */
+    #gate {
+      position: fixed;
+      inset: 0;
+      background: var(--green-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 24px;
+    }
+
+    .gate-box {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+    }
+
+    .gate-logo {
+      width: 64px;
+      height: 64px;
+      background: var(--green);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 28px;
+    }
+
+    .gate-box h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .gate-box p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .gate-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      letter-spacing: 0.05em;
+      margin-bottom: 14px;
+    }
+
+    .gate-input:focus { border-color: var(--green); }
+    .gate-input.error { border-color: #e53e3e; animation: shake 0.3s; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .gate-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--green);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .gate-btn:hover { background: var(--green-dark); }
+
+    .gate-error {
+      font-size: 13px;
+      color: #e53e3e;
+      margin-top: 10px;
+      min-height: 20px;
+    }
+
+    /* ── VAULT ── */
+    #vault { display: none; }
+
+    header {
+      background: var(--green-dark);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .header-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .header-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: white;
+      line-height: 1.2;
+    }
+
+    .header-text p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      margin-top: 2px;
+    }
+
+    .header-badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .templates-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(26,115,64,0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-emoji {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .download-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      background: var(--green-light);
+      color: var(--green-dark);
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+      margin-top: auto;
+    }
+
+    .download-btn:hover { background: #c8e6d4; }
+
+    .download-btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    /* Coming Soon */
+    .coming-soon {
+      background: var(--white);
+      border: 2px dashed var(--border);
+      border-radius: 14px;
+      padding: 32px;
+      text-align: center;
+    }
+
+    .coming-soon h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .coming-soon p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--green-mid);
+      border-radius: 50%;
+      margin-right: 6px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      .gate-box { padding: 36px 24px; }
+      header { padding: 16px 20px; }
+      .header-badge { display: none; }
+      main { padding: 28px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PASSWORD GATE -->
+  <div id="gate">
+    <div class="gate-box">
+      <div class="gate-logo">🧙</div>
+      <h1>The Sheets Wizard Vault</h1>
+      <p>Enter your access password to unlock your templates.</p>
+      <input
+        type="password"
+        id="pw-input"
+        class="gate-input"
+        placeholder="Enter password"
+        autocomplete="off"
+      />
+      <button class="gate-btn" onclick="checkPassword()">Unlock Vault →</button>
+      <div class="gate-error" id="pw-error"></div>
+    </div>
+  </div>
+
+  <!-- VAULT CONTENT -->
+  <div id="vault">
+    <header>
+      <div class="header-icon">🧙</div>
+      <div class="header-text">
+        <h1>The Sheets Wizard Vault</h1>
+        <p>@realsheetswizard — stan.store/thekeithmartin</p>
+      </div>
+      <div class="header-badge">✦ New templates added regularly</div>
+    </header>
+
+    <main>
+      <p class="section-label">Your Templates</p>
+
+      <div class="templates-grid">
+
+        <div class="card">
+          <div class="card-emoji">📅</div>
+          <div class="card-title">Content Calendar</div>
+          <div class="card-desc">Plan and schedule your content weeks ahead without the chaos.</div>
+          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1ke8uB_sLUbmSpALLIY31XidQh9reU8gK/export?format=xlsx" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .xlsx
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-emoji">📊</div>
+          <div class="card-title">Social Media Analytics Tracker</div>
+          <div class="card-desc">Track what's working so you stop wasting time on what isn't.</div>
+          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1s69ZTfLuCwl4QrMjpQ79693Qr9hsOKKJ/export?format=xlsx" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .xlsx
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-emoji">⚙️</div>
+          <div class="card-title">Weekly Production Planner</div>
+          <div class="card-desc">Structure your week around what actually moves the business forward.</div>
+          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1YFzivGepW1evmNm7BHM_jWjMTs3E42gr/export?format=xlsx" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .xlsx
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-emoji">💰</div>
+          <div class="card-title">Income & Expense Tracker</div>
+          <div class="card-desc">Know your numbers at a glance, every month.</div>
+          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1vsIVH34Es_g14qV7LwolgngfQzR7JuDq/export?format=xlsx" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .xlsx
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-emoji">👥</div>
+          <div class="card-title">Client & Profit Tracker</div>
+          <div class="card-desc">See exactly which clients and projects are making you money.</div>
+          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1SYn_sVt4rpVvnx3aJD_oMxF6enfLI2cP/export?format=xlsx" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .xlsx
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-emoji">⚖️</div>
+          <div class="card-title">Weight Tracker</div>
+          <div class="card-desc">Log your weight, track your trend, and stay consistent without overthinking it.</div>
+          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1qxeSew_dpLYbLf6sPIJ6TScCqKIJ-up4/export?format=xlsx" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download .xlsx
+          </a>
+        </div>
+
+      </div>
+
+      <p class="section-label">Coming Soon</p>
+      <div class="coming-soon">
+        <h3><span class="pulse"></span>More templates on the way</h3>
+        <p>New templates are added to this vault regularly — you'll always find the latest version here. Check back after any Sheets Wizard post for new additions.</p>
+      </div>
+    </main>
+
+    <footer>
+      © 2026 Sheets Wizard · @realsheetswizard · <a href="https://stan.store/thekeithmartin" style="color: var(--green);">stan.store/thekeithmartin</a>
+    </footer>
+  </div>
+
+  <script>
+    const PASSWORD = 'swvault26';
+
+    function checkPassword() {
+      const input = document.getElementById('pw-input');
+      const error = document.getElementById('pw-error');
+      if (input.value === PASSWORD) {
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('vault').style.display = 'block';
+      } else {
+        input.classList.add('error');
+        error.textContent = 'Incorrect password. Check your purchase confirmation email.';
+        setTimeout(() => input.classList.remove('error'), 400);
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    document.getElementById('pw-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+  </script>
+
+</body>
+</html>
