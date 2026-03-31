@@ -26,98 +26,9 @@
       min-height: 100vh;
     }
 
-    /* ── PASSWORD GATE ── */
-    #gate {
-      position: fixed;
-      inset: 0;
-      background: var(--green-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      padding: 24px;
-    }
-
-    .gate-box {
-      background: var(--white);
-      border-radius: 16px;
-      padding: 48px 40px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.25);
-    }
-
-    .gate-logo {
-      width: 64px;
-      height: 64px;
-      background: var(--green);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 20px;
-      font-size: 28px;
-    }
-
-    .gate-box h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .gate-box p {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 28px;
-    }
-
-    .gate-input {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-      transition: border-color 0.2s;
-      letter-spacing: 0.05em;
-      margin-bottom: 14px;
-    }
-
-    .gate-input:focus { border-color: var(--green); }
-    .gate-input.error { border-color: #e53e3e; animation: shake 0.3s; }
-
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      75% { transform: translateX(6px); }
-    }
-
-    .gate-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--green);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .gate-btn:hover { background: var(--green-dark); }
-
-    .gate-error {
-      font-size: 13px;
-      color: #e53e3e;
-      margin-top: 10px;
-      min-height: 20px;
-    }
 
     /* ── VAULT ── */
-    #vault { display: none; }
+    #vault { display: block; }
 
     header {
       background: var(--green-dark);
@@ -299,24 +210,6 @@
 </head>
 <body>
 
-  <!-- PASSWORD GATE -->
-  <div id="gate">
-    <div class="gate-box">
-      <div class="gate-logo">🧙</div>
-      <h1>The Sheets Wizard Vault</h1>
-      <p>Enter your access password to unlock your templates.</p>
-      <input
-        type="password"
-        id="pw-input"
-        class="gate-input"
-        placeholder="Enter password"
-        autocomplete="off"
-      />
-      <button class="gate-btn" onclick="checkPassword()">Unlock Vault →</button>
-      <div class="gate-error" id="pw-error"></div>
-    </div>
-  </div>
-
   <!-- VAULT CONTENT -->
   <div id="vault">
     <header>
@@ -407,28 +300,6 @@
     </footer>
   </div>
 
-  <script>
-    const PASSWORD = 'swvault26';
-
-    function checkPassword() {
-      const input = document.getElementById('pw-input');
-      const error = document.getElementById('pw-error');
-      if (input.value === PASSWORD) {
-        document.getElementById('gate').style.display = 'none';
-        document.getElementById('vault').style.display = 'block';
-      } else {
-        input.classList.add('error');
-        error.textContent = 'Incorrect password. Check your purchase confirmation email.';
-        setTimeout(() => input.classList.remove('error'), 400);
-        input.value = '';
-        input.focus();
-      }
-    }
-
-    document.getElementById('pw-input').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') checkPassword();
-    });
-  </script>
 
 </body>
 </html>
