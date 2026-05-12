@@ -1,325 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Sheets Wizard Vault</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sheets Wizard - Excel resources for small business owners</title>
+  <meta name="description" content="Free Excel playbooks and references for small business owners. Practical formulas, keyboard shortcuts, and templates that save hours every week.">
+  <meta property="og:title" content="Sheets Wizard">
+  <meta property="og:description" content="Free Excel playbooks and references for small business owners.">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --green: #1a7340;
-      --green-light: #e8f5ee;
-      --green-mid: #2d9e5f;
-      --green-dark: #145c33;
+      --brand: #1E7A3A;
+      --brand-dark: #16612E;
+      --brand-light: #F0F7F3;
+      --border: #DDE9DE;
       --text: #1a1a1a;
-      --muted: #5a6672;
-      --border: #d4e6da;
-      --bg: #f7fbf9;
-      --white: #ffffff;
+      --text-body: #3F4750;
+      --muted: #6B7280;
+      --bg-section: #F9FAFB;
+      --card-border: #E8EBEC;
     }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
+      line-height: 1.5;
+      background: #fff;
     }
 
-
-    /* ── VAULT ── */
-    #vault { display: block; }
-
-    header {
-      background: var(--green-dark);
-      padding: 20px 32px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .header-icon {
-      width: 42px;
-      height: 42px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      flex-shrink: 0;
-    }
-
-    .header-text h1 {
-      font-size: 20px;
-      font-weight: 700;
-      color: white;
-      line-height: 1.2;
-    }
-
-    .header-text p {
-      font-size: 13px;
-      color: rgba(255,255,255,0.65);
-      margin-top: 2px;
-    }
-
-    .header-badge {
-      margin-left: auto;
-      background: rgba(255,255,255,0.15);
-      color: white;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 5px 12px;
-      border-radius: 20px;
-      white-space: nowrap;
-    }
-
-    main {
-      max-width: 900px;
+    .container {
+      max-width: 960px;
       margin: 0 auto;
-      padding: 40px 24px 80px;
+      padding: 0 24px;
     }
 
-    .section-label {
-      font-size: 11px;
-      font-weight: 700;
+    /* HEADER */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--green);
+      color: var(--brand);
+    }
+    .handle {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .handle a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .handle a:hover { color: var(--brand); }
+
+    /* HERO */
+    .hero { padding: 56px 0 32px; text-align: center; }
+    .hero h1 {
+      font-size: 40px;
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       margin-bottom: 16px;
     }
+    .hero p {
+      font-size: 18px;
+      color: var(--text-body);
+      max-width: 540px;
+      margin: 0 auto;
+    }
 
-    .templates-grid {
+    /* SECTION */
+    section.products { padding: 32px 0 48px; }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .section-head h2 {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .section-head .section-sub {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* CARDS GRID */
+    .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 16px;
-      margin-bottom: 40px;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
 
     .card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 24px;
+      background: #fff;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      transition: box-shadow 0.2s, transform 0.2s;
     }
 
-    .card:hover {
-      box-shadow: 0 8px 24px rgba(26,115,64,0.12);
-      transform: translateY(-2px);
+    .card-image {
+      aspect-ratio: 16 / 10;
+      background: var(--brand-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .card-image.placeholder {
+      background: linear-gradient(135deg, #1E7A3A, #2D9B4D);
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      text-align: center;
+      padding: 20px;
     }
 
-    .card-emoji {
-      font-size: 28px;
-      line-height: 1;
+    .card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 10px;
+    }
+
+    .card-badge {
+      display: inline-block;
+      align-self: flex-start;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .card-badge.free {
+      background: var(--brand-light);
+      color: var(--brand);
+    }
+    .card-badge.paid {
+      background: #FFF7E6;
+      color: #B45309;
     }
 
     .card-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 700;
       color: var(--text);
       line-height: 1.3;
     }
-
     .card-desc {
-      font-size: 13px;
-      color: var(--muted);
+      font-size: 14px;
+      color: var(--text-body);
       line-height: 1.5;
       flex: 1;
     }
-
-    .download-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 11px 16px;
-      background: var(--green-light);
-      color: var(--green-dark);
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      transition: background 0.2s;
-      margin-top: auto;
-    }
-
-    .download-btn:hover { background: #c8e6d4; }
-
-    .download-btn svg {
-      width: 15px;
-      height: 15px;
-      flex-shrink: 0;
-    }
-
-    /* Coming Soon */
-    .coming-soon {
-      background: var(--white);
-      border: 2px dashed var(--border);
-      border-radius: 14px;
-      padding: 32px;
-      text-align: center;
-    }
-
-    .coming-soon h3 {
-      font-size: 16px;
-      font-weight: 700;
+    .card-price {
+      font-size: 22px;
+      font-weight: 800;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-top: 4px;
     }
 
-    .coming-soon p {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.6;
+    /* INLINE FORM ON FREE CARD */
+    .card-form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .card-form input[type="email"] {
+      width: 100%;
+      padding: 11px 12px;
+      font-size: 14px;
+      border: 1px solid #d4d4d4;
+      border-radius: 6px;
+      font-family: inherit;
+      color: var(--text);
+      outline: none;
+    }
+    .card-form input[type="email"]:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(30, 122, 58, 0.15);
     }
 
-    .pulse {
+    .btn {
       display: inline-block;
-      width: 8px;
-      height: 8px;
-      background: var(--green-mid);
-      border-radius: 50%;
-      margin-right: 6px;
-      animation: pulse 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    footer {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
       text-align: center;
-      padding: 20px;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: var(--brand);
+      color: white;
+    }
+    .btn-primary:hover { background: var(--brand-dark); }
+
+    .card-meta {
       font-size: 12px;
       color: var(--muted);
-      border-top: 1px solid var(--border);
+      text-align: center;
+      margin-top: 4px;
     }
 
-    @media (max-width: 600px) {
-      .gate-box { padding: 36px 24px; }
-      header { padding: 16px 20px; }
-      .header-badge { display: none; }
-      main { padding: 28px 16px 60px; }
+    /* FOOTER */
+    footer {
+      padding: 40px 0 48px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      background: var(--bg-section);
+    }
+    footer .links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    footer .links a {
+      color: var(--text-body);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    footer .links a:hover { color: var(--brand); }
+    footer .credit {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 720px) {
+      .hero { padding: 40px 0 24px; }
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 16px; }
+      .cards { grid-template-columns: 1fr; }
+      .section-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+      .card-title { font-size: 17px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- VAULT CONTENT -->
-  <div id="vault">
-    <header>
-      <div class="header-icon">🧙</div>
-      <div class="header-text">
-        <h1>The Sheets Wizard Vault</h1>
-        <p>@realsheetswizard — stan.store/thekeithmartin</p>
-      </div>
-      <div class="header-badge">✦ New templates added regularly</div>
-    </header>
-
-    <main>
-      <p class="section-label">Your Templates</p>
-
-      <div class="templates-grid">
-
-        <div class="card">
-          <div class="card-emoji">📅</div>
-          <div class="card-title">Content Calendar</div>
-          <div class="card-desc">Plan and schedule your content weeks ahead without the chaos.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1ke8uB_sLUbmSpALLIY31XidQh9reU8gK/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-        <div class="card">
-          <div class="card-emoji">📊</div>
-          <div class="card-title">Social Media Analytics Tracker</div>
-          <div class="card-desc">Track what's working so you stop wasting time on what isn't.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1s69ZTfLuCwl4QrMjpQ79693Qr9hsOKKJ/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-        <div class="card">
-          <div class="card-emoji">⚙️</div>
-          <div class="card-title">Weekly Production Planner</div>
-          <div class="card-desc">Structure your week around what actually moves the business forward.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1YFzivGepW1evmNm7BHM_jWjMTs3E42gr/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-        <div class="card">
-          <div class="card-emoji">💰</div>
-          <div class="card-title">Income & Expense Tracker</div>
-          <div class="card-desc">Know your numbers at a glance, every month.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1vsIVH34Es_g14qV7LwolgngfQzR7JuDq/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-        <div class="card">
-          <div class="card-emoji">👥</div>
-          <div class="card-title">Client & Profit Tracker</div>
-          <div class="card-desc">See exactly which clients and projects are making you money.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1SYn_sVt4rpVvnx3aJD_oMxF6enfLI2cP/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-        <div class="card">
-          <div class="card-emoji">⚖️</div>
-          <div class="card-title">Weight Tracker</div>
-          <div class="card-desc">Log your weight, track your trend, and stay consistent without overthinking it.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1qxeSew_dpLYbLf6sPIJ6TScCqKIJ-up4/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-        <div class="card">
-          <div class="card-emoji">📊</div>
-          <div class="card-title">Social Media Analytics Tracker <span style="font-size:11px;font-weight:600;background:#e8f0fe;color:#3c5bbd;padding:2px 7px;border-radius:10px;margin-left:4px;">Google Sheets</span></div>
-          <div class="card-desc">Track what's working so you stop wasting time on what isn't.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1hhalHRK8VBwmHjFlxb7vp-52vi2lvngm/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-        <div class="card">
-          <div class="card-emoji">🧾</div>
-          <div class="card-title">Invoice Tracker</div>
-          <div class="card-desc">Track every invoice, flag what's overdue, and know exactly what you're owed at a glance.</div>
-          <a class="download-btn" href="https://docs.google.com/spreadsheets/d/1g2oHQMeZDOrQhOIEslvFxxz0mQ7u1nPS/export?format=xlsx" download>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download .xlsx
-          </a>
-        </div>
-
-      </div>
-
-      <p class="section-label">Coming Soon</p>
-      <div class="coming-soon">
-        <h3><span class="pulse"></span>More templates on the way</h3>
-        <p>New templates are added to this vault regularly — you'll always find the latest version here. Check back after any Sheets Wizard post for new additions.</p>
-      </div>
-    </main>
-
-    <footer>
-      © 2026 Sheets Wizard · @realsheetswizard · <a href="https://stan.store/thekeithmartin" style="color: var(--green);">stan.store/thekeithmartin</a>
-    </footer>
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="logo">Sheets Wizard</div>
+      <div class="handle"><a href="https://www.tiktok.com/@realsheetswizard" target="_blank">@realsheetswizard</a></div>
+    </div>
   </div>
+</header>
 
+<main>
+  <section class="hero">
+    <div class="container">
+      <h1>Excel for small business owners</h1>
+      <p>Free playbooks, references, and practical templates. The formulas and shortcuts that save hours every week.</p>
+    </div>
+  </section>
+
+  <section class="products">
+    <div class="container">
+      <div class="section-head">
+        <h2>Free downloads</h2>
+        <span class="section-sub">No spam. Just the file.</span>
+      </div>
+
+      <div class="cards">
+
+        <!-- Super Six Playbook -->
+        <div class="card">
+          <div class="card-image">
+            <img src="super-six-thumbnail.png" alt="The Super Six Excel Playbook">
+          </div>
+          <div class="card-body">
+            <span class="card-badge free">Free</span>
+            <div class="card-title">The Super Six Playbook</div>
+            <div class="card-desc">Six Excel formulas every small business owner needs. Copy them tonight, use them tomorrow.</div>
+            <!-- ============================================== -->
+            <!-- MAILERLITE FORM (Super Six):                  -->
+            <!-- Replace action URL with the POST endpoint     -->
+            <!-- from your Super Six MailerLite form           -->
+            <!-- ============================================== -->
+            <form class="card-form" action="REPLACE_WITH_SUPER_SIX_MAILERLITE_URL" method="POST">
+              <input type="email" name="fields[email]" placeholder="your@email.com" required>
+              <button type="submit" class="btn btn-primary">Send Me The Playbook</button>
+            </form>
+            <div class="card-meta">Or read the <a href="landing-super-six.html" style="color: var(--brand);">full breakdown</a></div>
+          </div>
+        </div>
+
+        <!-- Excel Shortcuts Reference -->
+        <div class="card">
+          <div class="card-image">
+            <img src="excel-shortcuts-thumbnail.png" alt="Excel Keyboard Shortcuts Reference">
+          </div>
+          <div class="card-body">
+            <span class="card-badge free">Free</span>
+            <div class="card-title">Excel Shortcuts Reference</div>
+            <div class="card-desc">The 50+ keyboard shortcuts that save an hour a day. Mac and Windows. Printable.</div>
+            <!-- ============================================== -->
+            <!-- MAILERLITE FORM (Shortcuts):                  -->
+            <!-- Replace action URL with the POST endpoint     -->
+            <!-- from your Shortcuts MailerLite form           -->
+            <!-- ============================================== -->
+            <form class="card-form" action="REPLACE_WITH_SHORTCUTS_MAILERLITE_URL" method="POST">
+              <input type="email" name="fields[email]" placeholder="your@email.com" required>
+              <button type="submit" class="btn btn-primary">Send Me The Reference</button>
+            </form>
+            <div class="card-meta">Or read the <a href="landing-excel-shortcuts.html" style="color: var(--brand);">full breakdown</a></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="products">
+    <div class="container">
+      <div class="section-head">
+        <h2>Premium products</h2>
+        <span class="section-sub">Built for daily use.</span>
+      </div>
+
+      <div class="cards">
+
+        <!-- Formula Playbook -->
+        <div class="card">
+          <div class="card-image">
+            <img src="formula-playbook-thumbnail.png" alt="The Formula Playbook">
+          </div>
+          <div class="card-body">
+            <span class="card-badge paid">£9.99</span>
+            <div class="card-title">The Formula Playbook</div>
+            <div class="card-desc">40 Excel formulas that run a small business. Worked examples for each. The complete reference.</div>
+            <div class="card-price">£9.99</div>
+            <!-- Replace with actual Payhip product URL -->
+            <a href="REPLACE_WITH_PAYHIP_FORMULA_PLAYBOOK_URL" class="btn btn-primary" target="_blank">Get The Playbook</a>
+          </div>
+        </div>
+
+        <!-- Small Business Excel Bundle -->
+        <div class="card">
+          <div class="card-image">
+            <img src="small-business-bundle-thumbnail.png" alt="Small Business Excel Bundle">
+          </div>
+          <div class="card-body">
+            <span class="card-badge paid">£27</span>
+            <div class="card-title">Small Business Excel Bundle</div>
+            <div class="card-desc">Seven ready-to-use Excel templates. Dashboards, trackers, forecasts, and more.</div>
+            <div class="card-price">£27</div>
+            <!-- Replace with actual Payhip product URL -->
+            <a href="REPLACE_WITH_PAYHIP_BUNDLE_URL" class="btn btn-primary" target="_blank">Get The Bundle</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="links">
+      <a href="https://www.tiktok.com/@realsheetswizard" target="_blank">TikTok</a>
+      <a href="mailto:hello@sheetswizard.co.uk">Contact</a>
+    </div>
+    <div class="credit">Sheets Wizard &middot; Excel for small business owners</div>
+  </div>
+</footer>
 
 </body>
 </html>
